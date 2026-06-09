@@ -1590,13 +1590,29 @@ function goTo(id) {
 
     async function fetchFriendLetters() {
       if (!LETTERS_API_URL) return [];
-      const res = await fetch(LETTERS_API_URL + '?t=' + Date.now(), { cache: 'no-store' });
+
+      const res = await fetch(LETTERS_API_URL + '?action=list&t=' + Date.now(), {
+        method: 'GET',
+        cache: 'no-store'
+      });
+
       const data = await res.json();
-      return (data.letters || []).map((item, i) => ({
-        title: `Letter ${String(ORIGINAL_LETTERS_COUNT + i + 1).padStart(2, '0')}`,
-        from: item.name || 'Anonymous',
-        body: item.message || ''
-      })).filter(item => item.body.trim());
+
+      // Backend bisa mengirim format:
+      // 1) { letters: [...] }
+      // 2) [...]
+      const rows = Array.isArray(data) ? data : (data.letters || []);
+
+      return rows.map((item, i) => {
+        const name = item.name || item.Name || item.sender || item.Sender || 'Anonymous';
+        const message = item.letter || item.Letter || item.message || item.Message || item.body || item.Body || '';
+
+        return {
+          title: `Letter ${String(ORIGINAL_LETTERS_COUNT + i + 1).padStart(2, '0')}`,
+          from: name,
+          body: message
+        };
+      }).filter(item => item.body && item.body.trim());
     }
 
     async function refreshLetters() {
