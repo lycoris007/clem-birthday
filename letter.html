@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Secret Letter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0} body{min-height:100vh;display:grid;place-items:center;padding:22px;font-family:Poppins,sans-serif;color:#fff7fb;background:radial-gradient(circle at 20% 10%,rgba(255,158,207,.55),transparent 30%),radial-gradient(circle at 80% 0%,rgba(181,140,255,.52),transparent 34%),linear-gradient(135deg,#13071d,#3b1e55 55%,#ffb7db 140%);overflow:hidden}.card{width:min(100%,460px);padding:28px 22px;border:1px solid rgba(255,255,255,.32);border-radius:32px;background:rgba(255,255,255,.15);box-shadow:0 30px 90px rgba(60,20,80,.42);backdrop-filter:blur(22px);position:relative}.card:before{content:'💌';position:absolute;top:-34px;left:50%;transform:translateX(-50%);font-size:4rem;filter:drop-shadow(0 18px 30px rgba(255,158,207,.45))}.eyebrow{margin-top:28px;text-align:center;letter-spacing:.22em;text-transform:uppercase;color:#ffd1e8;font-size:.72rem}.card h1{font-family:'Playfair Display',serif;text-align:center;font-size:2.1rem;margin:12px 0 8px}.card p{text-align:center;color:rgba(255,255,255,.78);line-height:1.65;font-size:.95rem;margin-bottom:22px}.form{display:grid;gap:13px}input,textarea{width:100%;padding:14px 15px;border:1px solid rgba(255,255,255,.26);border-radius:18px;background:rgba(255,255,255,.12);color:white;outline:none;font:inherit}textarea{min-height:160px;resize:vertical}input::placeholder,textarea::placeholder{color:rgba(255,255,255,.55)}button{border:0;border-radius:999px;padding:15px 18px;font:inherit;font-weight:700;color:#5b255b;background:linear-gradient(135deg,#fff,#ffd1e8 45%,#c9afff);box-shadow:0 18px 40px rgba(255,158,207,.35);cursor:pointer}.note{text-align:center;min-height:24px;color:#ffe2f2;font-size:.9rem;margin-top:10px}.float{position:absolute;border-radius:999px;background:rgba(255,255,255,.5);animation:float 7s linear infinite}@keyframes float{from{transform:translateY(100vh);opacity:0}20%{opacity:.8}to{transform:translateY(-20vh);opacity:0}}
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+  <main class="card">
+    <div class="eyebrow">Secret Letter</div>
+    <h1>Write a little wish</h1>
+    <p>Tulis nama dan pesan manis kamu. Surat ini akan masuk ke koleksi Small Gift secara otomatis.</p>
+    <form class="form" id="letterForm">
+      <input id="name" name="name" maxlength="40" placeholder="Nama kamu" required>
+      <textarea id="message" name="message" maxlength="900" placeholder="Tulis surat / ucapan kamu di sini..." required></textarea>
+      <button type="submit">Submit Letter 💌</button>
+      <div class="note" id="note"></div>
+    </form>
+  </main>
+
+  <script>
+    // Isi dengan Google Apps Script Web App URL yang sama dengan file utama.
+    const LETTERS_API_URL = 'https://script.google.com/macros/s/AKfycbzn0Trgsf98QoYSiuiLUg-DKRDLt_CKV2G0E_AElS3cGyCykemIbyX9TogZd7S1Jt7Fow/exec';
+
+    const form = document.getElementById('letterForm');
+    const note = document.getElementById('note');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!LETTERS_API_URL) {
+        note.textContent = 'Belum terhubung ke Google Sheets. Isi LETTERS_API_URL dulu.';
+        return;
+      }
+      note.textContent = 'Sending your letter...';
+      const data = new FormData(form);
+      try {
+        await fetch(LETTERS_API_URL, { method: 'POST', body: data, mode: 'no-cors' });
+        form.reset();
+        note.textContent = 'Your letter has been sent. Thank you 💖';
+      } catch (err) {
+        note.textContent = 'Gagal mengirim. Coba lagi ya.';
+      }
+    });
+
+    const p = document.getElementById('particles');
+    for(let i=0;i<24;i++){const s=document.createElement('span');s.className='float';s.style.left=Math.random()*100+'vw';s.style.width=s.style.height=(3+Math.random()*5)+'px';s.style.animationDelay=Math.random()*7+'s';s.style.animationDuration=(5+Math.random()*6)+'s';p.appendChild(s)}
+  </script>
+</body>
+</html>
