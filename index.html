@@ -388,7 +388,7 @@
       box-shadow: 0 0 34px rgba(255,209,232,.55), 0 22px 55px rgba(0,0,0,.25);
       animation: pulseOrb 2.2s ease-in-out infinite;
     }
-    @keyframes pulseOrb { 50% { transform: translateY(-6px) scale(1.04); box-shadow: 0 0 52px rgba(255,209,232,.75), 0 28px 66px rgba(0,0,0,.28); } }
+    @keyframes pulseOrb { 50% { transform: translateY(-6px) scale(1.04);} }
     .vault-card h2 { font-size: clamp(2rem, 8.5vw, 3.7rem); line-height: 1.08; margin-bottom: 12px; }
     .vault-card p { color: rgba(255,255,255,.76); line-height: 1.75; margin: 0 auto 18px; max-width: 36rem; }
     .secret-steps { display: grid; gap: 9px; margin: 20px 0 18px; text-align: left; }
@@ -1039,7 +1039,6 @@
           <button class="pin-key" onclick="submitPin()">♡</button>
         </div>
         <div class="pin-message" id="pinMessage">Hint: birthday date</div>
-        <div class="welcome-clem" id="pinWelcome">Welcome, Clem ♡</div>
       </div>
     </section>
 
@@ -1234,7 +1233,7 @@
           -->
           <video
             id="ultimateGiftVideo"
-            src="assets/videos/rb.mp4"
+            src="assets/videos/final.mp4"
             poster="assets/images/blur.jpg"
             controls
             playsinline
@@ -1256,7 +1255,7 @@
        or change the src paths below. If files are missing, the website uses built-in temporary WebAudio melodies and terminal typing sounds. -->
   <audio id="birthdaySongAudio" src="assets/audio/birthday-song.mp3" preload="auto"></audio>
   <audio id="letterReadingAudio" src="assets/audio/letter-backsound.mp3" preload="auto" loop></audio>
-  <audio id="timelineMemoryAudio" src="assets/audio/memory-backsound.mp3" preload="auto" loop></audio>
+  <audio id="timelineMemoryAudio" src="assets/audio/memory.mp3" preload="auto" loop></audio>
 
 
   <div class="photo-lightbox" id="photoLightbox" aria-hidden="true">
@@ -1547,7 +1546,7 @@ function goTo(id) {
       try {
         realAudio.pause();
         realAudio.currentTime = 0;
-        realAudio.volume = 0.25; // atur volume lagu tiup lilin di sini: 0.1 - 1.0
+        realAudio.volume = 0.20; // atur volume lagu tiup lilin di sini: 0.1 - 1.0
         realAudio.muted = false;
         realAudio.onended = () => { musicPlaying = false; };
         realAudio.onerror = () => {
@@ -1685,7 +1684,7 @@ function goTo(id) {
           startReadingMusicFallback(mode);
         };
         realAudio.currentTime = 0;
-        realAudio.volume = 0.25; // atur volume lagu tiup lilin di sini: 0.1 - 1.0
+        realAudio.volume = 0.20; // atur volume lagu tiup lilin di sini: 0.1 - 1.0
         realAudio.onerror = fallback;
         const promise = realAudio.play();
         if (promise && promise.catch) promise.catch(fallback);
